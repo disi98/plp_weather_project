@@ -1,0 +1,65 @@
+{% extends "core/base.html" %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+
+
+<div class="min-h-screen bg-gradient-to-r from-blue-400 via-indigo-500 to-purple-600 flex items-center justify-center p-4">
+  <div class="bg-white bg-opacity-80 rounded-xl shadow-lg p-8 max-w-md w-full">
+    <h1 class="text-3xl font-bold text-center text-gray-800 mb-6">Weather Checker</h1>
+    <form method="POST" class="flex space-x-2 mb-6">
+      {% csrf_token %}
+      <input
+        type="text"
+        name="city"
+        placeholder="Enter city name"
+        required
+        class="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-400"
+      />
+      <button
+        type="submit"
+        class="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition"
+      >Get Weather</button>
+    </form>
+
+    {% if country_code %}
+      <div class="bg-white bg-opacity-90 rounded-lg shadow p-6">
+        <div class="flex items-center justify-between">
+          <div>
+            <h2 class="text-2xl font-semibold text-gray-800">
+              {{ request.POST.city|title }}, {{ country_code }}
+            </h2>
+            <p class="text-gray-600">{{ description|title }}</p>
+          </div>
+          <img
+            src="http://openweathermap.org/img/wn/{{ icon }}@2x.png"
+            alt="Weather icon"
+            class="w-16 h-16"
+          />
+        </div>
+        <div class="grid grid-cols-2 gap-4 mt-4 text-gray-700">
+          <div>
+            <p class="font-medium">Temperature</p>
+            <p>{{ temp }}</p>
+          </div>
+          <div>
+            <p class="font-medium">Humidity</p>
+            <p>{{ humidity }}%</p>
+          </div>
+          <div>
+            <p class="font-medium">Pressure</p>
+            <p>{{ pressure }} hPa</p>
+          </div>
+          <div>
+            <p class="font-medium">Coordinates</p>
+            <p>{{ coordinate }}</p>
+          </div>
+        </div>
+      </div>
+    {% else %}
+      <p class="text-center text-gray-600">Please enter a city to get the weather.</p>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}
